@@ -105,6 +105,7 @@ int copy_ts           = 0;
 int start_at_zero     = 0;
 int copy_tb           = -1;
 int debug_ts          = 0;
+int mysurvive         = 0;
 int exit_on_error     = 0;
 int abort_on_flags    = 0;
 int print_stats       = -1;
@@ -3140,6 +3141,8 @@ const OptionDef options[] = {
         "timestamp discontinuity delta threshold", "threshold" },
     { "dts_error_threshold", HAS_ARG | OPT_FLOAT | OPT_EXPERT,       { &dts_error_threshold },
         "timestamp error delta threshold", "threshold" },
+    { "mysurvive",      OPT_BOOL | OPT_EXPERT,                       { &mysurvive },
+        "survive on input error" },
     { "xerror",         OPT_BOOL | OPT_EXPERT,                       { &exit_on_error },
         "exit on error", "error" },
     { "abort_on",       HAS_ARG | OPT_EXPERT,                        { .func_arg = opt_abort_on },

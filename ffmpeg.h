@@ -529,6 +529,7 @@ extern int copy_ts;
 extern int start_at_zero;
 extern int copy_tb;
 extern int debug_ts;
+extern int mysurvive;
 extern int exit_on_error;
 extern int abort_on_flags;
 extern int print_stats;
