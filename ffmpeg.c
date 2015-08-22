@@ -3765,6 +3765,9 @@ static int process_input(int file_index)
             return ret;
         ret = get_input_packet(ifile, &pkt);
     }
+    if (mysurvive && ret < 0 && ret != AVERROR_EOF) {
+        return 0;
+    }
     if (ret < 0) {
         if (ret != AVERROR_EOF) {
             print_error(is->filename, ret);
