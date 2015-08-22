@@ -3627,6 +3627,9 @@ static int process_input(int file_index)
     is  = ifile->ctx;
     ret = get_input_packet(ifile, &pkt);
 
+    if (mysurvive && ret < 0 && ret != AVERROR_EOF) {
+        return 0;
+    }
     if (ret == AVERROR(EAGAIN)) {
         ifile->eagain = 1;
         return ret;
