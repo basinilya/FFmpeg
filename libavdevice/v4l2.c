@@ -483,6 +483,8 @@ static int convert_timestamp(AVFormatContext *ctx, int64_t *ts)
     return 0;
 }
 
+static int eagains = 0;
+
 static int mmap_read_frame(AVFormatContext *ctx, AVPacket *pkt)
 {
     struct video_data *s = ctx->priv_data;
@@ -497,8 +499,15 @@ static int mmap_read_frame(AVFormatContext *ctx, AVPacket *pkt)
     /* FIXME: Some special treatment might be needed in case of loss of signal... */
     while ((res = v4l2_ioctl(s->fd, VIDIOC_DQBUF, &buf)) < 0 && (errno == EINTR));
     if (res < 0) {
-        if (errno == EAGAIN)
+        if (errno == EAGAIN) {
+            eagains++;
+            if (eagains > 100) {
+                eagains = 0;
+                av_log(ctx, AV_LOG_WARNING,
+                       "more than 100 EAGAIN in a row, wtf?\n");
+            }
             return AVERROR(EAGAIN);
+        }
 
         res = AVERROR(errno);
         av_log(ctx, AV_LOG_ERROR, "ioctl(VIDIOC_DQBUF): %s\n",
